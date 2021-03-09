@@ -1,3 +1,4 @@
+using MakeContentBLL.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ namespace MakeContent
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            ConfigurationBLL.Configuration(services, Configuration.GetConnectionString("defCon"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
