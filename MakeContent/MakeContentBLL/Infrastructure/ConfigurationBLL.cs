@@ -14,8 +14,8 @@ namespace MakeContentBLL.Infrastructure
     {
         public static void Configuration(IServiceCollection services, string connString)
         {
-            services.AddDbContext<CreatorsContext>(x=>x.UseSqlServer(connString);
-            services.AddIdentity<User, Role>().AddEntityFrameworkStores<CreatorsContext>();
+            services.AddDbContext<CreatorsContext>(x=>x.UseSqlServer(connString));
+            services.AddIdentity<User, Role>(x=>x.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<CreatorsContext>();
         }
     }
 }

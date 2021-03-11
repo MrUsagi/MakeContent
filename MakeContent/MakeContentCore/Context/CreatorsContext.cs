@@ -1,4 +1,5 @@
-﻿using MakeContentDomain.Models.IdentityModels;
+﻿using MakeContentDomain.Models;
+using MakeContentDomain.Models.IdentityModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,5 +16,7 @@ namespace MakeContentCore.Context
         {
             Database.EnsureCreated();
         }
+
+        public DbSet<AuthorPage> Authors { get; set; }
     }
 }
