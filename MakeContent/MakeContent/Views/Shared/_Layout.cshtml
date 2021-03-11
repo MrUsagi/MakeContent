@@ -16,7 +16,40 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="d-flex">
+                    <div class="navbar-collapse collapse justify-content-between align-self-end">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <input class="form-control" placeholder="Search..." type="text" />
+                            </li>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Log In</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-danger rounded-pill" asp-controller="Account" asp-action="Register">Become Maker</a>
+                                </li>
+                            }
+                            else
+                            {
+                //Тут должна быть фотка с выпадающим списком но пока что будет только кнопка выйти
+
+
+                                @using (Html.BeginForm(FormMethod.Post))
+                                    {
+                                        <li class="nav-item">
+                                            <button type="submit" class="btn btn-link nav-link text-dark" asp-controller="Account" asp-action="Logout">Log Out</button>
+                                        </li>
+                                    }
+                                
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+                
+                @*<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -25,7 +58,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                </div>
+                </div>*@
             </div>
         </nav>
     </header>

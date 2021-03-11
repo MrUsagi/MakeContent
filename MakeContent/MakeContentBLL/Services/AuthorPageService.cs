@@ -25,12 +25,12 @@ namespace MakeContentBLL.Services
 
         public async Task CreateTierAsync(Guid pageId, Tier tier)
         {
-            var page = await _context.Authors.Include(x=>x.Tiers).FirstOrDefaultAsync(x=>x.Id == pageId);
-            if (page != null)
-            {
-                page.Tiers.Add(tier);
-                await _context.SaveChangesAsync();
-            }
+            //var page = await _context.Authors.Include(x=>x.Tiers).FirstOrDefaultAsync(x=>x.Id == pageId);
+            //if (page != null)
+            //{
+            //    page.Tiers.Add(tier);
+            //    await _context.SaveChangesAsync();
+            //}
         }
     }
 }

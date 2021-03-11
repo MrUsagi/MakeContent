@@ -25,6 +25,7 @@ namespace MakeContent
         {
             services.AddControllersWithViews();
             ConfigurationBLL.Configuration(services, Configuration.GetConnectionString("defCon"));
+            services.AddAuthentication().AddCookie(x => x.LoginPath = "/Login");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +43,7 @@ namespace MakeContent
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

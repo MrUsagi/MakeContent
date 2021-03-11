@@ -66,10 +66,23 @@ namespace MakeContentUI.Controllers
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Book");
+                return RedirectToAction("Index", "Home");
             }
             return StatusCode(500);
 
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Logout(string returnUrl = "")
+        {
+            await _signInManager.SignOutAsync();
+            if (returnUrl == "/")
+                return RedirectToAction("Index", "Home");
+            else if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            else
+                return StatusCode(404);
         }
     }
 }

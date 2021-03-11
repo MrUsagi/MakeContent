@@ -17,6 +17,6 @@ namespace MakeContentCore.Context
             Database.EnsureCreated();
         }
 
-        public DbSet<AuthorPage> Authors { get; set; }
+        //public DbSet<AuthorPage> Authors { get; set; }
     }
 }

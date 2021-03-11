@@ -12,6 +12,8 @@ namespace MakeContentUI.Models
         public string Login { get; set; }
         [Required]
         public string Password { get; set; }
+        [Required][Compare(nameof(Password))]
+        public string PasswordConfirm { get; set; }
         [Required]
         public string Email { get; set; }
     }
