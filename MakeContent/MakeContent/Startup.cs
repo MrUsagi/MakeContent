@@ -1,4 +1,6 @@
 using MakeContentBLL.Infrastructure;
+using MakeContentBLL.Services;
+using MakeContentBLL.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,9 +25,15 @@ namespace MakeContent
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+
             ConfigurationBLL.Configuration(services, Configuration.GetConnectionString("defCon"));
+            var option = new SendGridOptions();
+            Configuration.GetSection("SendGridOptions").Bind(option);
+            services.AddTransient<SendGridOptions>(x => option);
+            //services.Configure<SendGridOptions>(op => Configuration.GetSection("SendGridOptions"));
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddAuthentication().AddCookie(x => x.LoginPath = "/Login");
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

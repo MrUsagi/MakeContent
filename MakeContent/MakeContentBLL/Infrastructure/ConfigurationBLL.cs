@@ -1,5 +1,6 @@
 ﻿using MakeContentCore.Context;
 using MakeContentDomain.Models.IdentityModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,7 +16,7 @@ namespace MakeContentBLL.Infrastructure
         public static void Configuration(IServiceCollection services, string connString)
         {
             services.AddDbContext<CreatorsContext>(x=>x.UseSqlServer(connString));
-            services.AddIdentity<User, Role>(x=>x.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<CreatorsContext>();
+            services.AddIdentity<User, Role>(x=>x.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<CreatorsContext>().AddDefaultTokenProviders();
         }
     }
 }

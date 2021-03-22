@@ -1,4 +1,5 @@
 ﻿using MakeContent.Models;
+using MakeContentBLL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,14 +15,17 @@ namespace MakeContent.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IEmailSender _emailSender;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IEmailSender emailSender)
         {
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
         {
+            _emailSender.SendEmailAsync("skydan2132@gmail.com", "some subject", "Hello World");
             return View();
         }
 
