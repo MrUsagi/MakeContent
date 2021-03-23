@@ -9,6 +9,7 @@ namespace MakeContentDomain.Models.IdentityModels
 {
     public class User : IdentityUser<Guid>
     {
-        public ICollection<AuthorPage> Pages { get; set; }
+        public string ImagePath { get; set; } = "https://st.depositphotos.com/1008939/1880/i/600/depositphotos_18807295-stock-photo-portrait-of-handsome-man.jpg";
+        //public ICollection<AuthorPage> Pages { get; set; }
     }
 }

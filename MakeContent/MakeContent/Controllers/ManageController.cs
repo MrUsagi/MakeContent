@@ -21,9 +21,9 @@ namespace MakeContentUI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Pages() {
-            var user = await _userManager.GetUserAsync(ClaimsPrincipal.Current);
-            return View(user.Pages);
-        }
+        //public async Task<IActionResult> Pages() {
+        //    var user = await _userManager.GetUserAsync(ClaimsPrincipal.Current);
+        //    return View(user.Pages);
+        //}
     }
 }
