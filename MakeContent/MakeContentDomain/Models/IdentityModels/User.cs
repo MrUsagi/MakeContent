@@ -9,5 +9,6 @@ namespace MakeContentDomain.Models.IdentityModels
 {
     public class User : IdentityUser<Guid>
     {
+        public ICollection<AuthorPage> Pages { get; set; }
     }
 }
