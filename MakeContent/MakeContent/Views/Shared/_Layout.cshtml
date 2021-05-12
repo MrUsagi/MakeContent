@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MakeContent</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -60,7 +62,7 @@
 
 
             <div class="d-flex">
-                <input class="form-control rounded rounded-pill me-3" placeholder="Search..." type="search" />
+                <input class="form-control form-control-sm rounded rounded-pill me-3 bg-light" placeholder="Search..." type="search" />
                 @if (!User.Identity.IsAuthenticated)
                 {
                         <a class="nav-link text-dark w-50" asp-controller="Account" asp-action="Login">Log In</a>
@@ -178,5 +180,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("AjaxSection", required: false) 
 </body>
 </html>

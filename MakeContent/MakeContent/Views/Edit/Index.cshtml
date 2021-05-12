@@ -1,0 +1,25 @@
+﻿<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-basics" type="button" role="tab" aria-controls="pills-basics" aria-selected="true">Basics</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-tiers" type="button" role="tab" aria-controls="pills-tiers" aria-selected="false">Tiers</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-merch" type="button" role="tab" aria-controls="pills-merch" aria-selected="false">Merch</button>
+    </li>
+</ul> 
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-basics" role="tabpanel" aria-labelledby="pills-basics-tab">@await Html.PartialAsync("Basics")</div>
+    <div class="tab-pane fade" id="pills-tiers" role="tabpanel" aria-labelledby="pills-tiers-tab">@await Html.PartialAsync("Tiers")</div>
+    <div class="tab-pane fade" id="pills-merch" role="tabpanel" aria-labelledby="pills-merch-tab">@await Html.PartialAsync("Merch")</div>
+</div>
+
+@*@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("li.nav-item").on("click", function () { $("li.nav-item").removeClass("active"); $(this).addClass("active"); });
+        });
+
+    </script>
+}*@ 

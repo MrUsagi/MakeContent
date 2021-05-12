@@ -1,4 +1,5 @@
 using MakeContentBLL.Infrastructure;
+using MakeContentBLL.Infrastructure.Provider;
 using MakeContentBLL.Services;
 using MakeContentBLL.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -26,12 +27,16 @@ namespace MakeContent
         public void ConfigureServices(IServiceCollection services)
         {
 
-            ConfigurationBLL.Configuration(services, Configuration.GetConnectionString("defCon"));
+            ConfigurationBLL.Configuration(services, Configuration["defCon"]);
             var option = new SendGridOptions();
             Configuration.GetSection("SendGridOptions").Bind(option);
             services.AddTransient<SendGridOptions>(x => option);
-            //services.Configure<SendGridOptions>(op => Configuration.GetSection("SendGridOptions"));
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddApplicationInsightsTelemetry();
+           // var a = Configuration["connectionString"];
+
+           // services.Configure<EmailConfirmationProviderOption>(op => op.TokenLifespan = TimeSpan.FromDays(5));
+            
             services.AddAuthentication().AddCookie(x => x.LoginPath = "/Login");
             services.AddControllersWithViews();
         }
@@ -59,6 +64,13 @@ namespace MakeContent
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
             });
         }
     }

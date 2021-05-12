@@ -15,5 +15,10 @@ namespace MakeContentBLL.Infrastructure.Provider
     {
         public EmailConfirmationTokenProvider(IDataProtectionProvider dataProtectionProvider,
             IOptions<DataProtectionTokenProviderOptions> options, ILogger<DataProtectorTokenProvider<TUser>> logger) : base(dataProtectionProvider, options, logger) { }
+        
+    }
+    public class EmailConfirmationProviderOption : DataProtectionTokenProviderOptions
+    {
+
     }
 }

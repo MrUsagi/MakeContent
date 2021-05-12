@@ -1,4 +1,6 @@
-﻿using MakeContentCore.Context;
+﻿using MakeContentBLL.Infrastructure.Provider;
+using MakeContentBLL.Services;
+using MakeContentCore.Context;
 using MakeContentDomain.Models.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +18,9 @@ namespace MakeContentBLL.Infrastructure
         public static void Configuration(IServiceCollection services, string connString)
         {
             services.AddDbContext<CreatorsContext>(x=>x.UseSqlServer(connString));
-            services.AddIdentity<User, Role>(x=>x.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<CreatorsContext>().AddDefaultTokenProviders().AddToke;
+            services.AddIdentity<User, Role>(x => { x.SignIn.RequireConfirmedEmail = true; x.User.RequireUniqueEmail = true; }).AddEntityFrameworkStores<CreatorsContext>().AddDefaultTokenProviders()/*.AddTokenProvider<EmailConfirmationTokenProvider<User>>("emailconfirmation")*/;
+            services.AddTransient<AuthorPageService>();
+            services.AddTransient<ManageService>();
         }
     }
 }

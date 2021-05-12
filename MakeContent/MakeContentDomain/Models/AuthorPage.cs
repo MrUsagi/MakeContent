@@ -24,6 +24,7 @@ namespace MakeContentDomain.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Creating { get; set; }
         public string About { get; set; }
         public string ProfileImageURL { get; set; }
         public string CoverImageURL { get; set; }
@@ -31,6 +32,7 @@ namespace MakeContentDomain.Models
         public PricingType Pricing { get; set; }
         public string PageCustomURL { get; set; }
         public bool IsActive { get; set; }
+        public bool IsShowInfo { get; set; }
 
         public ICollection<Post> Posts { get; set; }//Посты
         public ICollection<Follower> Followers { get; set; }//Бесплатная подписка на рассылку

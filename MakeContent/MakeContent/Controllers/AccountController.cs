@@ -1,4 +1,6 @@
-﻿using MakeContentDomain.Models.IdentityModels;
+﻿using MakeContentBLL.Services;
+using MakeContentBLL.Services.Interfaces;
+using MakeContentDomain.Models.IdentityModels;
 using MakeContentUI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,21 +12,22 @@ using System.Threading.Tasks;
 namespace MakeContentUI.Controllers
 {
     public class AccountController : Controller
-{
+    {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly IEmailSender _emailSender;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, RoleManager<Role> roleManager, IEmailSender emailSender)
         {
             this._signInManager = signInManager;
             this._roleManager = roleManager;
             this._userManager = userManager;
+            this._emailSender = emailSender;
         }
 
         [HttpGet]
         public async Task<IActionResult> Register(string returnUrl = "") => View();
-
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
@@ -45,7 +48,12 @@ namespace MakeContentUI.Controllers
             }
             else await _userManager.AddToRoleAsync(user, "user");
 
-            await _signInManager.SignInAsync(user, false);
+            //await _signInManager.SignInAsync(user, false);
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var link = Url.Action("ConfirmEmail", "Account",
+                new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
+            await _emailSender.SendEmailAsync(user.Email, "Email Confirmation", link);
 
             return Redirect("/home/index");
 
@@ -84,5 +92,53 @@ namespace MakeContentUI.Controllers
             else
                 return StatusCode(404);
         }
+
+        [HttpGet]
+        public IActionResult ResetPasswordEmail() => View();
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ResetPassword(string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var link = Url.Action("ChangePassword", "Account", new { guid = token, userEmail = user.Email }, Request.Scheme, Request.Host.Value);
+            await _emailSender.SendEmailAsync(userEmail, "Password reset", link);
+            return RedirectToAction("Index","Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangePasswordAsync(string userEmail, string guid)
+        {
+            return View("ResetPassword", new ResetPasswordViewModel() { Email = userEmail, Guid = guid });
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> ConfirmResetPassword(ResetPasswordViewModel model)
+        {
+            if (!TryValidateModel(model)) return View();
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            var res = await _userManager.ResetPasswordAsync(user, model.Guid, model.Password);
+            if (res.Succeeded)
+                return RedirectToAction("Index", "Home");
+            return StatusCode(404);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmailAsync(string guid, string userEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            var res = await _userManager.ConfirmEmailAsync(user, guid);
+            if (res.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, false);
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        
     }
 }

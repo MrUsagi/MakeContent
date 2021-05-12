@@ -1,0 +1,84 @@
+﻿@model MakeContentDomain.Models.AuthorPage
+
+<img class="w-100 mh-50" style="height:250px; display:inline-block;" src="@Model.CoverImageURL" />
+
+<div class="container gap-3 g-5">
+    <img class="img-fluid rounded rounded-circle mx-auto d-block" style="z-index:9999; margin-top:-50px;" width="200" height="200" src="@Model.ProfileImageURL" />
+    <div class="row text-center">
+        <p class="h3 fw-bold">@Model.Name</p>
+        <p class="text-secondary">@Model.Creating</p>
+    </div>
+
+    @if (Model.Tiers.Any())
+    {
+        <div class="row">
+            <h1 class="h1">Select a membersip level</h1>
+            @foreach (var tier in Model.Tiers)
+            {
+                @Html.Partial("TierCardPatrial", tier)
+            }
+        </div>
+
+    }
+    @*Нужно переименовать переменную для скытия сколько получает, и сколько людей подписано*@
+    @if (Model.IsShowInfo)
+    {
+        <div class="row">
+            <div class="col-3">
+                <p class="text-center">@Model.Subscriptions.Count</p>
+                <p class="text-center text-secondary">patrons</p>
+            </div>
+        </div>
+    }
+    <div class="row d-md-flex justify-content-center gap-2">
+        <button style="max-width:100px" class="btn btn-warning rounded-pill">Share</button>
+        <button style="max-width:100px" class="btn btn-warning rounded-pill">Follow</button>
+        <button style="width:50px;" class="btn btn-warning rounded-circle">...</button>
+    </div>
+    @if (Model.About != string.Empty)
+    {
+        <div class="row d-flex justify-content-center">
+            <h1 class="h1 text-center fw-bold">About @Model.Name</h1>
+            <div class="card col-10 mb-2">
+                <div class="card-body">
+                    @Model.About
+                </div>
+            </div>
+            @*<div class="border border-1 border-secondary rounded-1 p-3">
+                @Model.About
+            </div>*@
+        </div>
+    }
+    @*Нужна секция для целей или голосований, не могу пока придумать*@
+
+<div class="row d-flex justify-content-center">
+    
+    <div class="card col-10 mb-2">
+        <div class="card-body">
+            <p class="text-center text-secondary">By becoming a patron, you'll instatly unlock access to @Model.Posts.Count exclusive posts</p>
+        </div>
+    </div>
+    @*Нужно выводить топ-3 тегов постов, будь то картинки, статьи, голосования и т.д.*@
+</div>
+    <div class="row d-flex justify-content-center">
+        <h1 class="h1 text-center">Recent posts by @Model.Name</h1>
+        <p class="text-secondary">@*Сюда нужно сделать функционал подсчета постов за последнюю неделю или время с прошлого поста*@</p>
+        <div class="card col-10 mb-2">
+            <div class="card-body">
+                @if (!Model.Posts.Any())
+                {
+                    <h2 class="h2 text-center lead">There no any posts, let`s wait until they come</h2>
+                }
+                else
+                {
+                    foreach (var post in Model.Posts)
+                    {
+                        @Html.Partial("PostCardPatrial", post)
+                    }
+                }
+            </div>
+        </div>
+        
+    </div>
+</div>
+

@@ -1,0 +1,16 @@
+﻿@model MakeContentDomain.Models.AuthorPage
+@*@Html.ActionLink(Model.Name, "OpenPage", "Manage", new { pageId = Model.Id })*@
+
+
+<div class="col" onclick="location.href = '@Url.Action("OpenPage","Manage", new { pageId = Model.Id })'">
+    <div class="author card">
+        <img src="@Model.ProfileImageURL" class="img-thumbnail mx-auto text-center card-img rounded rounded-circle" width="25" height="25" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">Patrons: @Model.Subscriptions.Count</p>
+            <p class="card-text">Posts: @Model.Posts.Count</p>
+        </div>
+    </div>
+</div>
+
+@*Написать вид карточек страниц*@

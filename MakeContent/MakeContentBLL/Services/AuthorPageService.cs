@@ -17,10 +17,20 @@ namespace MakeContentBLL.Services
             this._context = context;
         }
 
-        public async Task CreateAuthorPageAsync(AuthorPage page)
+        public async Task CreateAuthorPageAsync(Guid userId, AuthorPage page)
         {
-            await _context.AddAsync(page);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if(user != null)
+            {
+                user.Pages.Add(page);
+            }
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<AuthorPage>> LoadPages(Guid userId)
+        {
+            var user = await _context.Users.Include(x => x.Pages).FirstOrDefaultAsync(x => x.Id == userId);
+            return user.Pages;
         }
 
         public async Task CreateTierAsync(Guid pageId, Tier tier)
